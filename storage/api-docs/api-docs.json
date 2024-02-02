@@ -1,0 +1,99 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Caixa",
+        "version": "1.0"
+    },
+    "paths": {
+        "/caixa/abastecer": {
+            "post": {
+                "operationId": "3e3d7c292d209f854f3cfaf8d622716a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AbastecerRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Abastecimento bem sucedido"
+                    },
+                    "400": {
+                        "description": "Erro durante o abastecimento"
+                    }
+                }
+            }
+        },
+        "/caixa/sacar": {
+            "post": {
+                "operationId": "3412d4963b690cbbee39d6c1a55fa049",
+                "requestBody": {
+                    "description": "Dados para saque",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SacarRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Saque bem sucedido"
+                    },
+                    "400": {
+                        "description": "Erro durante o saque"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AbastecerRequest": {
+                "description": "Dados para abastecimento",
+                "required": [
+                    "caixaDisponivel",
+                    "notas"
+                ],
+                "properties": {
+                    "caixaDisponivel": {
+                        "type": "boolean"
+                    },
+                    "notas": {
+                        "type": "object",
+                        "example": {
+                            "notasDez": 10,
+                            "notasVinte": 10,
+                            "notasCinquenta": 10,
+                            "notasCem": 10
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "SacarRequest": {
+                "description": "Dados para saque",
+                "required": [
+                    "valor",
+                    "horario"
+                ],
+                "properties": {
+                    "valor": {
+                        "type": "number"
+                    },
+                    "horario": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
