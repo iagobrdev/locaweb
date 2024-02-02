@@ -41,7 +41,7 @@ Para realizar os testes através do terminal, precisam ser informadas as entrada
 
   
 
-Após salvar as alterações do arquivo input.json, execute o comando `docker compose exec app sh -c "php artisan caixa < input.json"` que os testes serão realizados e retornados para o usuário como no exemplo abaixo.
+Após salvar as alterações do arquivo, execute `docker compose exec app sh -c "php artisan caixa < input.json"` que os testes serão realizados e retornados para o usuário como no exemplo abaixo.
 
 ![](assets/output.png  "")
 
