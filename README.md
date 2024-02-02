@@ -21,7 +21,7 @@ Esse é meu teste lógico para a vaga de programador Sênior Backend PHP na empr
 
   
 
-Foi utilizado a estrutura de containers (Docker) na aplicação, para realizar o build do projeto basta abrir o terminal e navegar até o diretório do mesmo. Logo após é necessário executar o comando. `docker compose up -d` que irá criar o container e baixar as dependências.
+Foi utilizado a estrutura de containers (Docker) na aplicação, para realizar o build do projeto basta abrir o terminal e navegar até o diretório do mesmo. Logo após é necessário executar o comando `docker compose up -d` que irá criar o container e baixar as dependências.
 
   
 
