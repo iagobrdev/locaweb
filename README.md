@@ -9,7 +9,7 @@ Esse é meu teste lógico para a vaga de programador Sênior Backend PHP na empr
 	- Swagger
 	- Docker
 
-Foi utilizado a estrutura de containers (Docker) na aplicação, para realizar o build do projeto basta abrir um terminar e navegar até o diretório do mesmo. Logo após é necessário executar no terminal o comando **docker compose up -d** que irá criar o container e baixar as dependências.
+Foi utilizado a estrutura de containers (Docker) na aplicação, para realizar o build do projeto basta abrir o terminal e navegar até o diretório do mesmo. Logo após é necessário executar o comando **docker compose up -d** que irá criar o container e baixar as dependências.
 
 Foi utilizado o PHPUnit para realizar testes unitários solicitados na documentação fornecida pelo recrutador. Para isso, basta executar no terminal o comando **docker compose exec app php artisan test** que será exibido o resultado. ![](assets/tests.png "")
 
