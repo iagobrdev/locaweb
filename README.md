@@ -9,15 +9,16 @@ Esse é meu teste lógico para a vaga de programador Sênior Backend PHP na empr
 	- Swagger
 	- Docker
 
-Foi utilizado a estrutura de containers (Docker) na aplicação, para realizar o build do projeto basta abrir o terminal e navegar até o diretório do mesmo. Logo após é necessário executar o comando **docker compose up -d** que irá criar o container e baixar as dependências.
+Foi utilizado a estrutura de containers (Docker) na aplicação, para realizar o build do projeto basta abrir o terminal e navegar até o diretório do mesmo. Logo após é necessário executar o comando abaixo que irá criar o container e baixar as dependências.
+docker compose up -d 
 
 Foi utilizado o PHPUnit para realizar testes unitários solicitados na documentação fornecida pelo recrutador. Para isso, basta executar no terminal o comando **docker compose exec app php artisan test** que será exibido o resultado. ![](assets/tests.png "")
 
 Existem duas formas de testar a aplicação. Através do **terminal** ou através da **api** que foi desenvolvida também. 
 
-Para realizar os testes através do terminal, precisam ser informadas as entradas dentro do arquivo **input.json** que se encontra na raíz do diretório![](assets/input.png "")Obs.: Pode ser informada mais de uma entrada como no exemplo acima.
+Para realizar os testes através do terminal, precisam ser informadas as entradas dentro do arquivo **input.json** que se encontra na raíz do diretório.![](assets/input.png "")Obs.: Podem ser informadas mais de uma entrada como no exemplo acima.
 
-Após informar as entradas no arquivo input.json, basta salvar o arquivo e executar o comando **docker compose exec app sh -c "php artisan caixa < input.json"** que os testes serão realizados e retornados para o usuário como no exemplo abaixo.![](assets/output.png "")
+Após salvar as alterações do arquivo input.json, execute o comando **docker compose exec app sh -c "php artisan caixa < input.json"** que os testes serão realizados e retornados para o usuário como no exemplo abaixo.![](assets/output.png "")
 Obs.: Para realizar o próximo teste, basta alterar a(s) entrada(s) no arquivo **input.json** e executar novamente o comando.
 
 A outra forma de testar a aplicação é através da **api**. Para isso, basta acessar o endereço **http://localhost:8000/api/documentation/** que contém toda a documentação criada com o Swagger.![](assets/api.png "")
