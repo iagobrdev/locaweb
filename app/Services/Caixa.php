@@ -16,11 +16,15 @@ class Caixa
      * Notas aceitas pelo caixa para abastecimentos e saques,
      * sendo a chave o nome da nota e o valor o seu respectivo valor.
      */
+    /**
+     * Notas aceitas pelo caixa para abastecimentos e saques,
+     * sendo a chave o nome da nota e o valor o seu respectivo valor.
+     */
     public const NOTAS_ACEITAS = [
-        'notasCem' => 100,
-        'notasCinquenta' => 50,
-        'notasVinte' => 20,
         'notasDez' => 10,
+        'notasVinte' => 20,
+        'notasCinquenta' => 50,
+        'notasCem' => 100,
     ];
 
     /**
@@ -34,10 +38,10 @@ class Caixa
      * @var array<string, int>
      */
     public array $notas = [
-        'notasCem' => 0,
-        'notasCinquenta' => 0,
-        'notasVinte' => 0,
         'notasDez' => 0,
+        'notasVinte' => 0,
+        'notasCinquenta' => 0,
+        'notasCem' => 0,
     ];
 
     /**
