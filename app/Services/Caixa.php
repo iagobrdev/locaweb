@@ -8,7 +8,7 @@ use App\Exceptions\CaixaEmUsoException;
 use App\Exceptions\CaixaInexistenteException;
 use App\Exceptions\SaqueDuplicadoException;
 use App\Exceptions\ValorIndisponivelException;
-use stdClass;
+use Illuminate\Support\Collection;
 
 class Caixa
 {
@@ -31,28 +31,33 @@ class Caixa
     /**
      * Notas disponíveis no caixa, com a quantidade de cada uma.
      *
-     * @var array<string, int>
+     * @var Collection<string, int>
      */
-    public array $notas = [
-        'notasCem' => 0,
-        'notasCinquenta' => 0,
-        'notasVinte' => 0,
-        'notasDez' => 0,
-    ];
+    public Collection $notas;
 
     /**
      * Total de abastecimentos realizados no caixa.
      *
-     * @var array<Abastecimento>
+     * @var Collection<Abastecimento>
      */
-    public array $abastecimentos = [];
+    public Collection $abastecimentos;
 
     /**
      * Total de saques realizados no caixa.
      *
-     * @var array<Saque>
+     * @var Collection<Saque>
      */
-    public array $saques = [];
+    public Collection $saques;
+
+    /**
+     * Cria uma nova instância de Caixa.
+     */
+    public function __construct()
+    {
+        $this->abastecimentos = collect();
+        $this->saques = collect();
+        $this->notas = collect(self::NOTAS_ACEITAS)->map(fn () => 0);
+    }
 
     /**
      * Realiza um abastecimento no caixa, adicionando notas ao mesmo.
@@ -69,14 +74,14 @@ class Caixa
         $this->disponivel = $abastecimento->caixaDisponivel;
 
         foreach ($abastecimento->notas as $nota => $quantidade) {
-            if (!array_key_exists($nota, self::NOTAS_ACEITAS)) {
+            if (! array_key_exists($nota, self::NOTAS_ACEITAS)) {
                 continue;
             }
 
             $this->notas[$nota] += $quantidade;
         }
 
-        $this->abastecimentos[] = $abastecimento;
+        $this->abastecimentos->push($abastecimento);
     }
 
     /**
@@ -91,7 +96,7 @@ class Caixa
      */
     public function sacar(Saque $saque): array
     {
-        if (!$this->disponivel) {
+        if (! $this->disponivel) {
             throw new CaixaInexistenteException();
         }
 
@@ -101,34 +106,34 @@ class Caixa
             throw new ValorIndisponivelException();
         }
 
-        // Verifique se houve um saque bem-sucedido com o mesmo valor nos últimos 10 minutos
-        foreach ($this->saques as $saqueAnterior) {
+        // verifica se houve um saque bem-sucedido com o mesmo valor nos últimos 10 minutos
+        $this->saques->each(function ($saqueAnterior) use ($saque) {
             if ($saque->verificaDuplicidade($saqueAnterior, 10)) {
                 throw new SaqueDuplicadoException();
             }
-        }
+        });
 
-        // Inicialize $notasSaque como array equivalente a NOTAS_ACEITAS com valores 0
-        $notasSaque = array_combine(array_keys(self::NOTAS_ACEITAS), array_fill(0, count(self::NOTAS_ACEITAS), 0));
+        // inicializa $notasSaque como array equivalente a NOTAS_ACEITAS com valores 0
+        $notasSaque = collect(self::NOTAS_ACEITAS)->map(fn () => 0)->toArray();
 
-        // Ordenar as notas em ordem decrescente para fazer o saque começar da maior nota
-        $notasAceitas = self::NOTAS_ACEITAS;
-        arsort($notasAceitas);
+        // ordena as notas em ordem decrescente para fazer o saque começar da maior nota
+        $notasAceitas = collect(self::NOTAS_ACEITAS)->sortDesc();
 
         foreach ($notasAceitas as $nota => $valorNota) {
             while ($this->notas[$nota] > 0 && $valorNota <= $valor) {
                 $valor -= $valorNota; // reduz o valor a sacar
-                $this->notas[$nota]--; // diminui a quantidade de notas no caixa
-                $notasSaque[$nota]++; // acrescenta a quantidade de notas sacadas
+
+                $this->notas[$nota] = $this->notas[$nota] - 1; // diminui a quantidade de notas no caixa
+                $notasSaque[$nota] = $notasSaque[$nota] + 1; // acrescenta a quantidade de notas sacadas
             }
         }
 
-        // Se o valor final é diferente de zero, significa que não foi possível fornecer o saque nas notas disponíveis.
+        // se o valor final é maior que zero, significa que não foi possível fornecer o saque nas notas disponíveis.
         if ($valor > 0) {
             throw new ValorIndisponivelException();
         }
 
-        $this->saques[] = $saque;
+        $this->saques->push($saque);
 
         return $notasSaque;
     }

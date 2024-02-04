@@ -5,49 +5,25 @@
         "version": "1.0"
     },
     "paths": {
-        "/caixa/abastecer": {
+        "/caixa": {
             "post": {
-                "operationId": "3e3d7c292d209f854f3cfaf8d622716a",
+                "operationId": "70e4654b4538fe2c5fbb28bc6890ae81",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/AbastecerRequest"
+                                "$ref": "#/components/schemas/OperacoesRequest"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Abastecimento bem sucedido"
+                        "description": "Operações bem sucedidas"
                     },
                     "400": {
-                        "description": "Erro durante o abastecimento"
-                    }
-                }
-            }
-        },
-        "/caixa/sacar": {
-            "post": {
-                "operationId": "3412d4963b690cbbee39d6c1a55fa049",
-                "requestBody": {
-                    "description": "Dados para saque",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SacarRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Saque bem sucedido"
-                    },
-                    "400": {
-                        "description": "Erro durante o saque"
+                        "description": "Erro durante as operações"
                     }
                 }
             }
@@ -55,44 +31,74 @@
     },
     "components": {
         "schemas": {
-            "AbastecerRequest": {
-                "description": "Dados para abastecimento",
-                "required": [
-                    "caixaDisponivel",
-                    "notas"
-                ],
+            "Abastecimento": {
                 "properties": {
-                    "caixaDisponivel": {
-                        "type": "boolean"
-                    },
-                    "notas": {
-                        "type": "object",
-                        "example": {
-                            "notasDez": 10,
-                            "notasVinte": 10,
-                            "notasCinquenta": 10,
-                            "notasCem": 10
-                        }
+                    "caixa": {
+                        "required": [
+                            "caixaDisponivel",
+                            "notas"
+                        ],
+                        "properties": {
+                            "caixaDisponivel": {
+                                "type": "boolean"
+                            },
+                            "notas": {
+                                "properties": {
+                                    "notasCem": {
+                                        "type": "integer"
+                                    },
+                                    "notasCinquenta": {
+                                        "type": "integer"
+                                    },
+                                    "notasVinte": {
+                                        "type": "integer"
+                                    },
+                                    "notasDez": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
             },
-            "SacarRequest": {
-                "description": "Dados para saque",
-                "required": [
-                    "valor",
-                    "horario"
-                ],
+            "Saque": {
                 "properties": {
-                    "valor": {
-                        "type": "number"
-                    },
-                    "horario": {
-                        "type": "string",
-                        "format": "date-time"
+                    "saque": {
+                        "required": [
+                            "valor",
+                            "horario"
+                        ],
+                        "properties": {
+                            "valor": {
+                                "type": "integer"
+                            },
+                            "horario": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
+            },
+            "OperacoesRequest": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "oneOf": [
+                        {
+                            "$ref": "#/components/schemas/Abastecimento"
+                        },
+                        {
+                            "$ref": "#/components/schemas/Saque"
+                        }
+                    ]
+                }
             }
         }
     }

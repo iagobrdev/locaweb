@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./input.json:/app/input.json
+    ports:
+      - 8000:8000

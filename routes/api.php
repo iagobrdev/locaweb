@@ -18,5 +18,4 @@ Route::get('/', function () {
     return response()->json(['status' => 'ok']);
 });
 
-Route::post('/caixa/abastecer', [CaixaController::class, 'abastecer']);
-Route::post('/caixa/sacar', [CaixaController::class, 'sacar']);
+Route::post('/caixa', [CaixaController::class, 'operacoes']);

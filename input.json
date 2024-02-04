@@ -1,19 +1,19 @@
 [
     {
-        "caixa":{
-            "caixaDisponivel":true,
-            "notas":{
-            "notasDez":0,
-            "notasVinte":0,
-            "notasCinquenta":1,
-            "notasCem":3
+        "caixa": {
+            "caixaDisponivel": true,
+            "notas": {
+                "notasDez": 0,
+                "notasVinte": 0,
+                "notasCinquenta": 1,
+                "notasCem": 3
             }
-            }
+        }
     },
     {
-        "saque":{
-            "valor":600,
-            "horario":"2019-02-13T11:01:01.000Z"
-            }
+        "saque": {
+            "valor": 100,
+            "horario": "2019-02-13T11:01:01.000Z"
+        }
     }
 ]

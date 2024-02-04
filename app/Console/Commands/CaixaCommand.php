@@ -2,14 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Data\Abastecimento;
-use App\Data\Saque;
-use App\Exceptions\CaixaInexistenteException;
-use App\Services\Caixa;
-use Carbon\Carbon;
-use Exception;
+use App\Services\Operacoes;
 use Illuminate\Console\Command;
-use JetBrains\PhpStorm\NoReturn;
 
 class CaixaCommand extends Command
 {
@@ -30,49 +24,17 @@ class CaixaCommand extends Command
     /**
      * Execute the console command.
      */
-    #[NoReturn] public function handle(): void
+    public function handle(): void
     {
-        $input = $this->readInput();
-        $caixa = app()->make(Caixa::class);
+        $output = app(Operacoes::class)->executar($this->readInput());
 
-        try {
-            foreach ($input as $operacao) {
-                if (isset($operacao->caixa)) { // abastecer
-                    $caixa->abastecer(new Abastecimento(
-                        caixaDisponivel: $operacao->caixa->caixaDisponivel,
-                        notas: (array)$operacao->caixa->notas
-                    ));
-                } else if (isset($operacao->saque)) { // sacar
-                    $caixa->sacar(new Saque(
-                        valor: $operacao->saque->valor,
-                        horario: Carbon::parse($operacao->saque->horario)
-                    ));
-                } else {
-                    throw new Exception('Operação inválida');
-                }
-
-                $this->printStatus($caixa);
-            }
-        } catch (Exception $e) {
-            $this->printStatus($caixa, $e);
-        }
+        $this->line(json_encode($output, JSON_PRETTY_PRINT));
     }
 
-    public function readInput(): array
+    private function readInput(): array
     {
-        return json_decode(str_replace('\n', '', file_get_contents('php://stdin')));
-    }
+        $content = str_replace(['\n', '\r'], '', file_get_contents('php://stdin'));
 
-    public function printStatus(Caixa $caixa, ?Exception $e = null): void
-    {
-        $status = [
-            'caixa' => $e instanceof CaixaInexistenteException ? (object)[] : [
-                'caixaDisponivel' => $caixa->disponivel,
-                'notas' => $caixa->notas
-            ],
-            'erros' => $e ? [$e->getMessage()] : []
-        ];
-
-        echo (json_encode($status, JSON_PRETTY_PRINT)) . PHP_EOL;
+        return json_decode($content, true);
     }
 }

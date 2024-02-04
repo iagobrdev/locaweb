@@ -9,22 +9,22 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libonig-dev \
     libxml2-dev \
-    libpng-dev 
+    libpng-dev
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install mbstring exif pcntl bcmath gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set work directory
-WORKDIR /var/www
+WORKDIR /app
 
-# Copy existing application directory
-COPY . /var/www
+# Copy existing application directory contents to work directory
+COPY . .
 
 # Install composer dependencies
-RUN COMPOSER_ALLOW_SUPERUSER=1 composer install
+RUN composer install
 
 # Expose port 8000
 EXPOSE 8000
