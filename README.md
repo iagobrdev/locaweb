@@ -36,7 +36,7 @@ Após salvar as alterações do arquivo, execute  `docker compose exec app sh -c
 
 Obs.: Para realizar o próximo teste, basta alterar a(s) entrada(s) no arquivo  **input.json**, salvar e executar novamente o comando.
 
-A outra forma de testar a aplicação é através da  **api**. Para isso, basta acessar o endereço  **[http://localhost:8000/docs/](http://localhost:8000/api/documentation/)**  que contém toda a documentação criada com o Swagger.
+A outra forma de testar a aplicação é através da  **api**. Para isso, basta acessar o endereço  **[http://localhost:8000/docs/](http://localhost:8000/docs/)**  que contém toda a documentação criada com o Swagger.
 
 [![](https://github.com/iagobrdev/locaweb/raw/main/assets/api.png)](https://github.com/iagobrdev/locaweb/blob/main/assets/api.png)
 
